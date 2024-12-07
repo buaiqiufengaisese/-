@@ -8,6 +8,13 @@ import random
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+def count_parentheses(s):
+    count = 0
+    for char in s:
+        if char == "（":
+            count += 1
+    return count
+
 for j in range(10):                         #"10"是刷题的次数，可改，一般一次能的两分以上，十次大概率足够
     try:
         driver = webdriver.Edge()           #'Edge'可换为其他浏览器，如'Chrome'
@@ -23,10 +30,30 @@ for j in range(10):                         #"10"是刷题的次数，可改，�
         for i in range(10):
             info = driver.find_element(By.CLASS_NAME, "side_unit_info")
             if("多选" in info.text):
+                info2 = driver.find_element(By.XPATH,'/html/body/div[2]/div/div[2]/div/div/div/div/div[2]/div[1]')
+                text = info2.text
+                c= count_parentheses(text)
                 choices = driver.find_elements(By.XPATH, '//input[@type="checkbox"]')
-                for choice in choices:
-                    choice.click()
-                    time.sleep(1)
+                if(c == 2):
+                    numbers = [0, 1, 2, 3]
+                    random_numbers = random.sample(numbers, 2)
+                    result_list = list(random_numbers)
+                    for num in result_list:
+                        choices[num].click()
+                        time.sleep(1)
+                elif(c == 3):
+                    numbers = [0, 1, 2, 3]
+                    random_numbers = random.sample(numbers, 3)
+                    result_list = list(random_numbers)
+                    for num in result_list:
+                        choices[num].click()
+                        time.sleep(1)
+                else:
+                    
+                    for choice in choices:
+                        choice.click()
+                        time.sleep(1)
+
             elif("填空" in info.text):
                 pass
             else:
